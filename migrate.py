@@ -9,10 +9,8 @@ prepopulated with Pod data.
 
 import dataset
 from decimal import Decimal
+
+from db import db
 from schema import TABLES
 
-db = dataset.connect('mysql://root@localhost/nieman')
 
-# get tags once and store in a dictionary
-# we probably only need id and Title
-tags = dict((t['id'], t['Tag']) for t in db['lst_tags'])
