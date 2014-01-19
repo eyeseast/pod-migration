@@ -20,6 +20,20 @@ from schema import TABLES
 # relative path is ok since this won't move
 env = Environment(loader=FileSystemLoader('./templates'))
 
+def convert(article, schema):
+    """
+    Map article fields to WP types according to schema.
+    """
+    data = {}
+    for wp, pod in schema.iteritems():
+        if callable(pod):
+            data[wp] = pod(article)
+        else:
+            data[wp] = article[pod]
+
+    return data
+
+
 def main():
     """
     For each table,
@@ -36,6 +50,13 @@ def main():
         template = env.get_template(schema['template'])
         fields = schema['fields']
         table = db.load_table(name) # fail if the name is wrong
+
+        if "query" in schema:
+            query = db.query(schema['query'])
+        else:
+            query = table.all()
+
+        posts = [convert(article, fields) for article in query]
 
         with open('./output/%s.xml' % name, 'w') as output:
             output.write(template.render().encode('utf-8'))

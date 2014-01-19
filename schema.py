@@ -2,6 +2,7 @@
 Define migration schemas in dictionaries here.
 """
 import datetime
+from decimal import Decimal
 from slugify import slugify
 
 from db import db, tags
@@ -23,12 +24,18 @@ def get_tags(tag_str):
 
 TABLES = {
 	'lst_nieman_reports_articles': {},
+
 	'lst_site_page': {},
+	
 	'lst_nieman_reports_issue_themes': {},
+	
 	'lst_news': {},
+	
 	'lst_niemans_news': {},
+
 	'lst_nieman_reports_onlineonly_articles': {
 	    'template': 'nieman-reports-article.xml',
+	    'query': 'SELECT *, max(version) FROM lst_nieman_reports_onlineonly_articles GROUP BY id',
 	    'fields': {
 		    'title': 'Title',
 		    #'link'
@@ -37,19 +44,20 @@ TABLES = {
 		    'guid': 'id',
 		    'content:encoded': 'Text',
 		    'excerpt:encoded': 'Teaser',
-		    'wp:post_id': 'id',
-		    'wp:post_date': 'created_datetime',
-		    'wp:post_date_gmt': 'created_datetime',
-		    'wp:post_name': lambda a: lambda a: slugify(a['Title']),
-		    'category:authors': 'Author',
+		    'post_id': 'id',
+		    'post_date': 'created_datetime',
+		    'post_date_gmt': 'created_datetime',
+		    'post_name': lambda a: lambda a: slugify(a['Title']),
+		    'authors': lambda a: [a['Author']], # make it a list
 		    #'category:reports-issues': lambda a: [],
-		    'category:post_tag': lambda a: get_tags(a['Tag']),
+		    #'category:post_tag': lambda a: get_tags(a['Tags'] or ''),
 		    'subhead': 'SubTitle',
 		    'pod_id': 'id',
 		    'pod_version': 'version',
 		    'pod_item_status': 'item_status',
-		    'imported': datetime.datetime.now()
+		    'imported': lambda a: datetime.datetime.now()
 	    }
 	},
+
 	'lst_watchdog_articles': {}
 }
