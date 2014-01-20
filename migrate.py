@@ -23,7 +23,16 @@ from schema import TABLES
 env = Environment(loader=FileSystemLoader('./templates'))
 
 # add filters
+def decode(s):
+    """
+    Make sure we have a utf-8 string.
+    """
+    if isinstance(s, unicode):
+        return s
+    return s.decode('utf-8')
+
 env.filters['slugify'] = slugify
+env.filters['decode'] = decode
 
 def convert(article, schema):
     """
