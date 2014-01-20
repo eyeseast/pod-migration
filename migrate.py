@@ -29,7 +29,8 @@ def convert(article, schema):
     """
     Map article fields to WP types according to schema.
     """
-    data = {}
+    # keep everything, then add or overwrite what we need
+    data = dict(article)
     for wp, pod in schema.iteritems():
         if callable(pod):
             data[wp] = pod(article)
@@ -79,7 +80,7 @@ def main():
         posts = [convert(article, fields) for article in query]
 
         # render with posts
-        xml = template.render(posts=posts)
+        xml = template.render(posts=posts, name=name)
 
         with open('./output/%s.xml' % name, 'w') as output:
             output.write(xml.encode('utf-8'))

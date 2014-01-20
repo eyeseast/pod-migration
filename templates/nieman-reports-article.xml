@@ -163,20 +163,28 @@
 				<wp:meta_key>pod_version</wp:meta_key>
 				<wp:meta_value><![CDATA[{{ post.version }}]]></wp:meta_value>
 			</wp:postmeta>
+
+			{% if post.item_status %}
 			<wp:postmeta>
 				<wp:meta_key>pod_item_status</wp:meta_key>
-				<wp:meta_value><![CDATA[A]]></wp:meta_value>
+				<wp:meta_value><![CDATA[{{ post.item_status }}]]></wp:meta_value>
 			</wp:postmeta>
+			{% endif %}
+			
 			<wp:postmeta>
 				<wp:meta_key>pod_pending_item</wp:meta_key>
 				<wp:meta_value><![CDATA[NULL]]></wp:meta_value>
 			</wp:postmeta>
+
 			<wp:postmeta>pod_order</wp:meta_key>
 				<wp:meta_value><![CDATA[0]]></wp:meta_value>
 			</wp:postmeta>
+			{% if post.Byline %}
 			<wp:postmeta>pod_byline</wp:meta_key>
-				<wp:meta_value><![CDATA[Artwork by]]></wp:meta_value>
+				<wp:meta_value><![CDATA[{{ post.Byline }}]]></wp:meta_value>
 			</wp:postmeta>
+			{% endif %}
+
 			<wp:postmeta>pod_include_in_rss_feed</wp:meta_key>
 				<wp:meta_value><![CDATA[1]]></wp:meta_value>
 			</wp:postmeta>
@@ -192,14 +200,16 @@
 			<wp:postmeta>pod_is_photo_essay</wp:meta_key>
 				<wp:meta_value><![CDATA[0]]></wp:meta_value>
 			</wp:postmeta>
+			{#
 			<wp:postmeta>pod_url</wp:meta_key>
 				<wp:meta_value><![CDATA[http://www.nieman.harvard.edu/reports/article/102933/The-Nieman-Factor.aspx]]></wp:meta_value>
 			</wp:postmeta>
+			#}
 			<wp:postmeta>pod_table</wp:meta_key>
-				<wp:meta_value><![CDATA[1hr_repors_article]]></wp:meta_value>
+				<wp:meta_value><![CDATA[{{ name }}]]></wp:meta_value>
 			</wp:postmeta>
 			<wp:postmeta>imported</wp:meta_key>
-				<wp:meta_value><![CDATA[import-2014-01-09-1]]></wp:meta_value>
+				<wp:meta_value><![CDATA[import-{{ post.imported }}]]></wp:meta_value>
 			</wp:postmeta>
 		</item>
 		{% endfor %}

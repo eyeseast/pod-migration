@@ -9,6 +9,8 @@ from slugify import slugify
 
 from db import db, tags
 
+NOW = datetime.datetime.now()
+
 def get_tag(id):
     """
     Return a tag name using an id, coercing to Decimal if needed.
@@ -58,7 +60,7 @@ TABLES = {
             'pod_id': 'id',
             'pod_version': 'version',
             'pod_item_status': 'item_status',
-            'imported': lambda a: datetime.datetime.now()
+            'imported': lambda a: NOW.strftime('%Y-%m-%d')
         }
     },
 
