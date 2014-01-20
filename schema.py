@@ -39,6 +39,48 @@ def safe_type(obj, cast, default=None):
 
 
 TABLES = {
+
+    'lst_site_page': {},
+    
+    'lst_news': {
+        'template': 'foundation-posts.xml',
+        'fields': {
+            'id': 'id',
+            'version': 'version',
+            'pubDate': 'Date',
+            'creator': 'created_by',
+            'title': 'Headline',
+            'slug': lambda a: slugify(a['Headline']),
+            'content': lambda a: a['Text'].decode('utf-8'),
+            'excerpt': lambda a: a['Teaser'].decode('utf-8'),
+            'tags': lambda a: get_tags(a['Tags'] or ''),
+            'post_date': 'Date',
+            'url': 'URL',
+            'url_text': 'URL Text',
+            'image': 'Teaser Image',
+            'imported': lambda a: NOW.strftime('%Y-%m-%d'),
+        },
+    },
+    
+    'lst_niemans_news': {
+        'template': 'foundation-posts.xml',
+        'fields': {
+            'id': 'id',
+            'version': 'version',
+            'pubDate': 'created_datetime',
+            'title': 'Headline',
+            'slug': lambda a: slugify(a['Headline']),
+            'content': lambda a: a['Text'].decode('utf-8'),
+            'excerpt': lambda a: a['Teaser'].decode('utf-8'),
+            'url': 'URL',
+            'url_text': 'URL Text',
+            'image': 'Teaser Image',
+
+            # taxonomies
+            'tags': lambda a: get_tags(a['Tags'] or ''),
+        }
+    },
+
     'lst_nieman_reports_articles': {
         'template': 'nieman-reports-article.xml',
         'fields': {
@@ -64,17 +106,8 @@ TABLES = {
             'authors': lambda a: [a['Author'].decode('utf-8')], # make it a list
             'issues': lambda a: [issues.get(safe_type(a['Issue - Theme'], Decimal))],
             'tags': lambda a: get_tags(a['Tags'] or ''),
-
         }
     },
-
-    'lst_site_page': {},
-    
-    'lst_nieman_reports_issue_themes': {},
-    
-    'lst_news': {},
-    
-    'lst_niemans_news': {},
 
     'lst_nieman_reports_onlineonly_articles': {
         'template': 'nieman-reports-article.xml',
