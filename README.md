@@ -22,3 +22,5 @@ taxonomies
 Issue:
 
 Tags: Stored as a string of comma-separated IDs. For example, "100030,100077,100078". This is gross, but it also means there's no join table to find.
+
+Versions: Article types use same-table versioning, so we only want the highest version number. I think we can solve this by selecting the max version number: "SELECT *, max(version) FROM <table> GROUP BY id"

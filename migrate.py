@@ -11,7 +11,9 @@ import dataset
 import os
 
 from decimal import Decimal
+from itertools import groupby
 from jinja2 import Environment, FileSystemLoader
+from slugify import slugify
 
 from db import db
 from schema import TABLES
@@ -19,6 +21,9 @@ from schema import TABLES
 # template setup
 # relative path is ok since this won't move
 env = Environment(loader=FileSystemLoader('./templates'))
+
+# add filters
+env.filters['slugify'] = slugify
 
 def convert(article, schema):
     """
@@ -32,6 +37,18 @@ def convert(article, schema):
             data[wp] = article[pod]
 
     return data
+
+
+def get_most_recent(posts):
+    """
+    Group posts by id and yield the highest version number.
+    """
+    # consume any iterable before we do anything else
+    # then group by id
+    posts = groupby(list(posts), lambda p: p['id'])
+    for id, group in posts:
+        post = sorted(group, key=lambda p: p['version'])[-1]
+        yield post
 
 
 def main():
@@ -56,10 +73,16 @@ def main():
         else:
             query = table.all()
 
+        if "version" in table.columns:
+            query = get_most_recent(query)
+
         posts = [convert(article, fields) for article in query]
 
+        # render with posts
+        xml = template.render(posts=posts)
+
         with open('./output/%s.xml' % name, 'w') as output:
-            output.write(template.render().encode('utf-8'))
+            output.write(xml.encode('utf-8'))
 
 
 if __name__ == '__main__':

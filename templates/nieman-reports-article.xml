@@ -23,6 +23,7 @@
 
 
 		<generator>http://wordpress.org/?v=3.7.1</generator>
+		{#
 		<!-- This is an item with variables from Excel doc from 11/25 -->
 		<item>
 			<title><!-- Title --></title>
@@ -106,69 +107,61 @@
 
 
 		</item>
-
+		#}
 		<!-- This is an item with live content from WordPress -->
+		{% for post in posts %}
 		<item>
-			<title>Watchdogs in Wyoming</title>
-			<link>http://reports.localhost.com/articles/watchdogs-in-wyoming/</link>
-			<pubDate>Fri, 01 Nov 2013 16:30:27 +0000</pubDate>
-			<dc:creator><![CDATA[upstatement]]></dc:creator>
-			<guid isPermaLink="false">http://reports.localhost.com/</guid>
+			<title>{{ post.title }}</title>
+			<link>http://reports.localhost.com/articles/{{ post.post_name }}/</link>
+			<pubDate>{{ post.pubDate }}</pubDate>
+			<dc:creator><![CDATA[{{ post.creator }}]]></dc:creator>
+			<guid isPermaLink="false">{{ post.id }}</guid>
 			<description></description>
-			<content:encoded><![CDATA[The changes were announced in a party decision that also laid out ambitious proposals to restructure the economy by encouraging greater private participation in finance and market competition in key economic sectors, as well as promising farmers better property protection and compensation for confiscated land.
-
-			Senior party officials, led by President Xi Jinping, endorsed the raft of 60 reform proposals at a four-day Central Committee conference that ended Tuesday, but the decision was announced days later.
-
-			The decision also pledged to gradually reduce the number of crimes that qualify for the death penalty, but gave no details about what crimes might be affected.
-
-			Mr. Xi described the proposals as a bold call for economic renewal, social improvement and patriotic nation-building — all under the firm control of one-party rule.
-
-			“We must certainly have the courage and conviction to renew ourselves,” he said in a statement accompanying the reform decision. Both were issued by the official news agency, Xinhua.
-
-			“Overcome all the cross-cutting restrictions, surmount the constraints of sectional interests, and have an active, engaged spirit in studying and putting forward reform proposals,” said Mr. Xi, who was appointed party leader a year ago and made president in March.
-
-			For months, economists and party analysts have speculated about the economic shifts that could be introduced in the meeting. But the planned changes to population policy and punishment — two areas in which reforms have been debated, and delayed, for years — gave the decision significance well beyond the economy and are likely to stir public expectations of even bolder changes under Mr. Xi and Prime Minister Li Keqiang.
-
-			For decades, most urban couples have been restricted to one child. That has been changing slowly in some cities, which have rules on the books that couples can have two children if both parents are single children. That policy will be further relaxed nationwide. Many rural couples already have two, or sometimes more, children.
-
-			[youtube=http://www.youtube.com/watch?v=TDaNohLE1lM credit="Jared Novack for Upstatement"]
-
-			“Launch implementation of a policy that when the husband or wife is a single child, the couple may have two children,” said the decision. “Steadily adjust and improve family planning policies.”
-
-			If carried through, the relaxation would mark the first significant nationwide easing of family-size restrictions that were put in place from the 1970s, said Wang Guangzhou, a demographer at the Chinese Academy of Social Sciences in Beijing.
-
-			“This is the first time that a central document has clearly proposed allowing two children when a husband or wife is an only child,” Mr. Wang said in a telephone interview. “Now it’s just talking about launching this, but the specific policies have to be developed at the operational level.”
-
-			[gallery ids="23478,619,616"]]]></content:encoded>
-			<excerpt:encoded><![CDATA[]]></excerpt:encoded>
-			<wp:post_id>117</wp:post_id>
-			<wp:post_date>2013-11-01 16:30:27</wp:post_date>
-			<wp:post_date_gmt>2013-11-01 16:30:27</wp:post_date_gmt>
+			<content:encoded><![CDATA[{{ post.content }}]]></content:encoded>
+			<excerpt:encoded><![CDATA[{{ post.excerpt }}]]></excerpt:encoded>
+			<wp:post_id>{{ post.id }}</wp:post_id>
+			<wp:post_date>{{ post.post_date }}</wp:post_date>
+			<wp:post_date_gmt>{{ post.post_date }}</wp:post_date_gmt>
 			<wp:comment_status>open</wp:comment_status>
 			<wp:ping_status>open</wp:ping_status>
-			<wp:post_name>watchdogs-in-wyoming</wp:post_name>
+			<wp:post_name>{{ post.post_name }}</wp:post_name>
 			<wp:status>publish</wp:status>
 			<wp:post_parent>0</wp:post_parent>
 			<wp:menu_order>0</wp:menu_order>
 			<wp:post_type>reports-article</wp:post_type>
 			<wp:post_password></wp:post_password>
 			<wp:is_sticky>0</wp:is_sticky>
-			<category domain="authors" nicename="james-geary"><![CDATA[James Geary]]></category>
-			<category domain="authors" nicename="jennifer-mckim"><![CDATA[Jennifer Third McKim]]></category>
-			<category domain="reports-issues" nicename="summer-2012"><![CDATA[Summer 2012]]></category>
-			<category domain="reports-category" nicename="watchdog"><![CDATA[Watchdog]]></category>
-			<category domain="post_tag" nicename="wyoming"><![CDATA[Wyoming]]></category>
+
+			{% for author in post.authors %}
+			<category domain="authors" nicename="{{ author|slugify }}"><![CDATA[{{ author }}]]></category>
+			{% endfor %}
+
+			{% for issue in post.issues %}
+			<category domain="reports-issues" nicename="{{ issue|slugify }}"><![CDATA[{{ issue }}]]></category>
+			{% endfor %}
+
+			{% for category in post.categories %}
+			<category domain="reports-category" nicename="{{ category|slugify }}"><![CDATA[{{ category }}]]></category>
+			{% endfor %}
+
+			{% for tag in post.tags %}
+			<category domain="post_tag" nicename="{{ tag|slugify }}"><![CDATA[{{ tag }}]]></category>
+			{% endfor %}
+
+			{% if post.subhead %}
 			<wp:postmeta>
 				<wp:meta_key>subhead</wp:meta_key>
-				<wp:meta_value><![CDATA[The Frontier State gets in on the act!]]></wp:meta_value>
+				<wp:meta_value><![CDATA[{{ post.subhead }}]]></wp:meta_value>
 			</wp:postmeta>
+			{% endif %}
+
 			<wp:postmeta>
 				<wp:meta_key>pod_id</wp:meta_key>
-				<wp:meta_value><![CDATA[10035]]></wp:meta_value>
+				<wp:meta_value><![CDATA[{{ post.id }}]]></wp:meta_value>
 			</wp:postmeta>
 			<wp:postmeta>
 				<wp:meta_key>pod_version</wp:meta_key>
-				<wp:meta_value><![CDATA[12]]></wp:meta_value>
+				<wp:meta_value><![CDATA[{{ post.version }}]]></wp:meta_value>
 			</wp:postmeta>
 			<wp:postmeta>
 				<wp:meta_key>pod_item_status</wp:meta_key>
@@ -209,5 +202,6 @@
 				<wp:meta_value><![CDATA[import-2014-01-09-1]]></wp:meta_value>
 			</wp:postmeta>
 		</item>
+		{% endfor %}
 	</channel>
 </rss>
