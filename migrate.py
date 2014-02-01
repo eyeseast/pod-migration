@@ -16,7 +16,7 @@ from jinja2 import Environment, FileSystemLoader
 from slugify import slugify
 
 from db import db
-from schema import TABLES
+from schema import TABLES, DATE_FORMAT
 
 # template setup
 # relative path is ok since this won't move
@@ -31,8 +31,19 @@ def decode(s):
         return s
     return s.decode('utf-8')
 
+
+def dateformat(s, format=DATE_FORMAT):
+    """
+    Return a date to string as format.
+    """
+    return s.strftime(format)
+
+# register filters and globals
 env.filters['slugify'] = slugify
 env.filters['decode'] = decode
+env.filters['dateformat'] = dateformat
+env.globals['DATE_FORMAT'] = DATE_FORMAT
+
 
 def convert(article, schema):
     """

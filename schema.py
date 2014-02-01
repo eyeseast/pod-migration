@@ -11,6 +11,9 @@ from db import db, tags, issues
 
 NOW = datetime.datetime.now()
 
+# Mon, 09 Dec 2013 22:26:28 +0000
+DATE_FORMAT = "%a, %b %d %Y %H:%M:%S +0000"
+
 def get_tag(id):
     """
     Return a tag name using an id, coercing to Decimal if needed.
@@ -51,10 +54,10 @@ TABLES = {
             'creator': 'created_by',
             'title': 'Headline',
             'slug': lambda a: slugify(a['Headline']),
-            'content': lambda a: a['Text'].decode('utf-8'),
+            'content': lambda a: a['Text'].decode('utf-8').strip(),
             'excerpt': lambda a: a['Teaser'].decode('utf-8'),
             'tags': lambda a: get_tags(a['Tags'] or ''),
-            'post_date': 'Date',
+            'post_date': lambda a: a['Date'],
             'url': 'URL',
             'url_text': 'URL Text',
             'image': 'Teaser Image',
@@ -68,9 +71,10 @@ TABLES = {
             'id': 'id',
             'version': 'version',
             'pubDate': 'created_datetime',
+            'post_date': 'created_datetime',
             'title': 'Headline',
             'slug': lambda a: slugify(a['Headline']),
-            'content': lambda a: a['Text'].decode('utf-8'),
+            'content': lambda a: a['Text'].decode('utf-8').strip(),
             'excerpt': lambda a: a['Teaser'].decode('utf-8'),
             'url': 'URL',
             'url_text': 'URL Text',
@@ -78,6 +82,7 @@ TABLES = {
 
             # taxonomies
             'tags': lambda a: get_tags(a['Tags'] or ''),
+            'categories': lambda a: ['Niemans in the News']
         }
     },
 
@@ -90,7 +95,7 @@ TABLES = {
             'pubDate': 'created_datetime',
             'creator': 'created_by',
             'guid': 'id',
-            'content': lambda a: a['Text'].decode('utf-8'),
+            'content': lambda a: a['Text'].decode('utf-8').strip(),
             'excerpt': lambda a: a['Teaser'].decode('utf-8'),
             'post_id': 'id',
             'post_date': 'created_datetime',
@@ -119,7 +124,7 @@ TABLES = {
             'pubDate': 'created_datetime',
             'creator': 'created_by',
             'guid': 'id',
-            'content': lambda a: a['Text'].decode('utf-8'),
+            'content': lambda a: a['Text'].decode('utf-8').strip(),
             'excerpt': lambda a: a['Teaser'].decode('utf-8'),
             'post_id': 'id',
             'post_date': 'created_datetime',
@@ -144,8 +149,8 @@ TABLES = {
             'version': 'version',
             'pubDate': 'Publish Date',
             'creator': 'created_by',
-            'title': lambda a: a['Title'].decode('utf-8'),
-            'content': lambda a: a['Text'].decode('utf-8'),
+            'title': lambda a: a['Title'].decode('utf-8').strip(),
+            'content': lambda a: a['Text'].decode('utf-8').strip(),
             'excerpt': lambda a: a['Summary'].decode('utf-8'),
             'post_date': 'Date',
             'post_date_gmt': 'Date',

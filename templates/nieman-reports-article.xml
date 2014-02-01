@@ -32,7 +32,11 @@
 			<dc:creator><![CDATA[<!--created_by-->]]></dc:creator>
 			<guid isPermaLink="false">http://reports.localhost.com/</guid>
 			<description></description>
-			<content:encoded><![CDATA[<!-- Text -->]]></content:encoded>
+			{% if post.content %}
+			<content:encoded><![CDATA[{{ post.content }}]]]></content:encoded>
+			{% else %}
+			<content:encoded><![CDATA[{{ post.excerpt }}]]></content:encoded>
+			{% endif %}
 			<excerpt:encoded><![CDATA[<!-- Teaser -->]]></excerpt:encoded>
 			<wp:post_id><!-- id --></wp:post_id>
 			<wp:post_date><!-- created_date --></wp:post_date>
@@ -113,15 +117,15 @@
 		<item>
 			<title>{{ post.title }}</title>
 			<link>http://reports.localhost.com/articles/{{ post.post_name }}/</link>
-			<pubDate>{{ post.pubDate }}</pubDate>
+			<pubDate>{{ post.pubDate|dateformat }}</pubDate>
 			<dc:creator><![CDATA[{{ post.creator }}]]></dc:creator>
 			<guid isPermaLink="false">{{ post.id }}</guid>
 			<description></description>
 			<content:encoded><![CDATA[{{ post.content }}]]></content:encoded>
 			<excerpt:encoded><![CDATA[{{ post.excerpt }}]]></excerpt:encoded>
 			<wp:post_id>{{ post.id }}</wp:post_id>
-			<wp:post_date>{{ post.post_date }}</wp:post_date>
-			<wp:post_date_gmt>{{ post.post_date }}</wp:post_date_gmt>
+			<wp:post_date>{{ post.post_date|dateformat }}</wp:post_date>
+			<wp:post_date_gmt>{{ post.post_date|dateformat }}</wp:post_date_gmt>
 			<wp:comment_status>open</wp:comment_status>
 			<wp:ping_status>open</wp:ping_status>
 			<wp:post_name>{{ post.post_name }}</wp:post_name>

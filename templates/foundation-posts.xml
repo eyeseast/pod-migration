@@ -18,105 +18,109 @@
 
 <!-- generator="WordPress/3.7.1" created="2013-12-12 06:03" -->
 <rss version="2.0"
-	xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/"
-	xmlns:content="http://purl.org/rss/1.0/modules/content/"
-	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
-	xmlns:dc="http://purl.org/dc/elements/1.1/"
-	xmlns:wp="http://wordpress.org/export/1.2/"
+    xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/"
+    xmlns:content="http://purl.org/rss/1.0/modules/content/"
+    xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:wp="http://wordpress.org/export/1.2/"
 >
 
 <channel>
-	<title>Nieman Foundation</title>
-	<link>http://localhost.com</link>
-	<description>The home of great journalism</description>
-	<pubDate>Thu, 12 Dec 2013 06:03:27 +0000</pubDate>
-	<language>en-US</language>
-	<wp:wxr_version>1.2</wp:wxr_version>
-	<wp:base_site_url>http://localhost.com/</wp:base_site_url>
-	<wp:base_blog_url>http://localhost.com</wp:base_blog_url>
+    <title>Nieman Foundation</title>
+    <link>http://localhost.com</link>
+    <description>The home of great journalism</description>
+    <pubDate>Thu, 12 Dec 2013 06:03:27 +0000</pubDate>
+    <language>en-US</language>
+    <wp:wxr_version>1.2</wp:wxr_version>
+    <wp:base_site_url>http://localhost.com/</wp:base_site_url>
+    <wp:base_blog_url>http://localhost.com</wp:base_blog_url>
 
-	<wp:author><wp:author_id>1</wp:author_id><wp:author_login>upstatement</wp:author_login><wp:author_email>jared@upstatement.com</wp:author_email><wp:author_display_name><![CDATA[upstatement]]></wp:author_display_name><wp:author_first_name><![CDATA[]]></wp:author_first_name><wp:author_last_name><![CDATA[]]></wp:author_last_name></wp:author>
+    <wp:author><wp:author_id>1</wp:author_id><wp:author_login>upstatement</wp:author_login><wp:author_email>jared@upstatement.com</wp:author_email><wp:author_display_name><![CDATA[upstatement]]></wp:author_display_name><wp:author_first_name><![CDATA[]]></wp:author_first_name><wp:author_last_name><![CDATA[]]></wp:author_last_name></wp:author>
 
-	<generator>http://wordpress.org/?v=3.7.1</generator>
-	{% for post in posts %}
-	<item>
-		<!-- There are lots of date fields please use whichever is the relevant one for a post based on discussion with nieman. I only need what should be pubicly represented as the date, formatted as described below -->
-		<title>{{ post.title|decode }}</title>
-		<link><!-- current URL from pod --></link>
-		<pubDate>{{ post.pubDate }}</pubDate>
-		<dc:creator>{{ post.creator }}</dc:creator>
-		<guid isPermaLink="false">{{ post.id }}</guid>
-		<description></description>
-		<content:encoded><![CDATA[{{ post.content }}]]]></content:encoded>
-		<excerpt:encoded><![CDATA[{{ post.excerpt }}]]></excerpt:encoded>
-		<wp:post_id>{{ post.id }}</wp:post_id>
-		<wp:post_date>{{ post.post_date }}</wp:post_date>
-		<wp:post_date_gmt>{{ post.post_date }}</wp:post_date_gmt>
-		<wp:comment_status>open</wp:comment_status>
-		<wp:ping_status>open</wp:ping_status>
-		<wp:post_name>{{ post.slug }}</wp:post_name>
-		<wp:status>publish</wp:status>
-		<wp:post_parent>0</wp:post_parent>
-		<wp:menu_order>0</wp:menu_order>
-		<wp:post_type>foundation-post</wp:post_type>
-		<wp:post_password></wp:post_password>
-		<wp:is_sticky>0</wp:is_sticky>
-		<!-- repeat for each tag -->
-		{% for tag in post.tags %}{% if tag %}
-		<category domain="post_tag" nicename="{{ tag|slugify }}"><![CDATA[{{ tag|decode }}]]></category>
-		{% endif %}{% endfor %}
+    <generator>http://wordpress.org/?v=3.7.1</generator>
+    {% for post in posts %}
+    <item>
+        <!-- There are lots of date fields please use whichever is the relevant one for a post based on discussion with nieman. I only need what should be pubicly represented as the date, formatted as described below -->
+        <title>{{ post.title|decode }}</title>
+        <link><!-- current URL from pod --></link>
+        <pubDate>{{ post.pubDate|dateformat }}</pubDate>
+        <dc:creator>{{ post.creator }}</dc:creator>
+        <guid isPermaLink="false">{{ post.id }}</guid>
+        <description></description>
+        {% if post.content %}
+        <content:encoded><![CDATA[{{ post.content }}]]]></content:encoded>
+        {% else %}
+        <content:encoded><![CDATA[{{ post.excerpt }}]]></content:encoded>
+        {% endif %}
+        <excerpt:encoded><![CDATA[{{ post.excerpt }}]]></excerpt:encoded>
+        <wp:post_id>{{ post.id }}</wp:post_id>
+        <wp:post_date>{{ post.post_date|dateformat }}</wp:post_date>
+        <wp:post_date_gmt>{{ post.post_date|dateformat }}</wp:post_date_gmt>
+        <wp:comment_status>open</wp:comment_status>
+        <wp:ping_status>open</wp:ping_status>
+        <wp:post_name>{{ post.slug }}</wp:post_name>
+        <wp:status>publish</wp:status>
+        <wp:post_parent>0</wp:post_parent>
+        <wp:menu_order>0</wp:menu_order>
+        <wp:post_type>foundation-post</wp:post_type>
+        <wp:post_password></wp:post_password>
+        <wp:is_sticky>0</wp:is_sticky>
+        <!-- repeat for each tag -->
+        {% for tag in post.tags %}{% if tag %}
+        <category domain="post_tag" nicename="{{ tag|slugify }}"><![CDATA[{{ tag|decode }}]]></category>
+        {% endif %}{% endfor %}
 
-		<!-- report for each category -->
-		{% for category in post.categories %}{% if category %}
-		<category domain="foundation-category" nicename="{{ issue|slugify }}"><![CDATA[{{ issue|decode }}]]></category>
-		{% endif %}{% endfor %}
-		{% if post.subhead %}
-		<wp:postmeta>
-			<wp:meta_key>subhead</wp:meta_key>
-			<wp:meta_value><![CDATA[{{ post.subhead }}]]></wp:meta_value>
-		</wp:postmeta>
-		{% endif %}
-		<wp:postmeta>
-			<wp:meta_key>pod_id</wp:meta_key>
-			<wp:meta_value><![CDATA[{{ post.id }}]]></wp:meta_value>
-		</wp:postmeta>
-		{#
-		<wp:postmeta>pod_url</wp:meta_key>
-			<wp:meta_value><![CDATA[<!-- Current URL of content -->]]></wp:meta_value>
-		</wp:postmeta>
-		#}
-		{% if post.url %}
-		<wp:postmeta>pod_url_field</wp:meta_key>
-			<wp:meta_value><![CDATA[{{ post.url }}]]></wp:meta_value>
-		</wp:postmeta>
-		{% endif %}
-		{% if post.image %}
-		<wp:postmeta>pod_teaser_image</wp:meta_key>
-			<wp:meta_value><![CDATA[{{ post.image }}]]></wp:meta_value>
-		</wp:postmeta>
-		{% endif %}
-		{% if post.url_text %}
-		<wp:postmeta>pod_url_text_field</wp:meta_key>
-			<wp:meta_value><![CDATA[{{ post.url_text }}]]></wp:meta_value>
-		</wp:postmeta>
-		{% endif %}
-		<wp:postmeta>pod_version</wp:meta_key>
-			<wp:meta_value><![CDATA[{{ post.version }}]]></wp:meta_value>
-		</wp:postmeta>
-		{% if post.item_status %}
-		<wp:postmeta>pod_item_status</wp:meta_key>
-			<wp:meta_value><![CDATA[{{ post.item_status }}]]></wp:meta_value>
-		</wp:postmeta>
-		{% endif %}
-		{# <!-- all other fields (unless otherwise directed by Nieman) related to content should be preserved as items similar to above where each field is named "pod_" followed by an lower_case_underscored_version of the field's name -->
-		<wp:postmeta>pod_[whatever_field]</wp:meta_key>
-			<wp:meta_value><![CDATA[<!-- Value of the field -->]]></wp:meta_value>
-		</wp:postmeta> #}
+        <!-- report for each category -->
+        {% for category in post.categories %}{% if category %}
+        <category domain="foundation-category" nicename="{{ category|slugify }}"><![CDATA[{{ category|decode }}]]></category>
+        {% endif %}{% endfor %}
+        {% if post.subhead %}
+        <wp:postmeta>
+            <wp:meta_key>subhead</wp:meta_key>
+            <wp:meta_value><![CDATA[{{ post.subhead }}]]></wp:meta_value>
+        </wp:postmeta>
+        {% endif %}
+        <wp:postmeta>
+            <wp:meta_key>pod_id</wp:meta_key>
+            <wp:meta_value><![CDATA[{{ post.id }}]]></wp:meta_value>
+        </wp:postmeta>
+        {#
+        <wp:postmeta>pod_url</wp:meta_key>
+            <wp:meta_value><![CDATA[<!-- Current URL of content -->]]></wp:meta_value>
+        </wp:postmeta>
+        #}
+        {% if post.url %}
+        <wp:postmeta>pod_url_field</wp:meta_key>
+            <wp:meta_value><![CDATA[{{ post.url }}]]></wp:meta_value>
+        </wp:postmeta>
+        {% endif %}
+        {% if post.image %}
+        <wp:postmeta>pod_teaser_image</wp:meta_key>
+            <wp:meta_value><![CDATA[{{ post.image }}]]></wp:meta_value>
+        </wp:postmeta>
+        {% endif %}
+        {% if post.url_text %}
+        <wp:postmeta>pod_url_text_field</wp:meta_key>
+            <wp:meta_value><![CDATA[{{ post.url_text }}]]></wp:meta_value>
+        </wp:postmeta>
+        {% endif %}
+        <wp:postmeta>pod_version</wp:meta_key>
+            <wp:meta_value><![CDATA[{{ post.version }}]]></wp:meta_value>
+        </wp:postmeta>
+        {% if post.item_status %}
+        <wp:postmeta>pod_item_status</wp:meta_key>
+            <wp:meta_value><![CDATA[{{ post.item_status }}]]></wp:meta_value>
+        </wp:postmeta>
+        {% endif %}
+        {# <!-- all other fields (unless otherwise directed by Nieman) related to content should be preserved as items similar to above where each field is named "pod_" followed by an lower_case_underscored_version of the field's name -->
+        <wp:postmeta>pod_[whatever_field]</wp:meta_key>
+            <wp:meta_value><![CDATA[<!-- Value of the field -->]]></wp:meta_value>
+        </wp:postmeta> #}
 
-		<wp:postmeta>imported</wp:meta_key>
-			<wp:meta_value><![CDATA[{{ post.imported }}]]></wp:meta_value>
-		</wp:postmeta>
-	</item>
-	{% endfor %}
+        <wp:postmeta>imported</wp:meta_key>
+            <wp:meta_value><![CDATA[{{ post.imported }}]]></wp:meta_value>
+        </wp:postmeta>
+    </item>
+    {% endfor %}
 </channel>
 </rss>

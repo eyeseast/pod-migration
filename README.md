@@ -1,6 +1,12 @@
 Migrating from Pod to WordPress
 ==============================
 
+To run:
+
+    $ python migrate.py
+
+This puts rendered XML files in the `output` directory. Each table in the database gets its own file. Tables that are too big for one file will be split across multiple files.
+
 Steps:
 
 1. Read a table in the nieman database
@@ -23,4 +29,4 @@ Issue:
 
 Tags: Stored as a string of comma-separated IDs. For example, "100030,100077,100078". This is gross, but it also means there's no join table to find.
 
-Versions: Article types use same-table versioning, so we only want the highest version number. I think we can solve this by selecting the max version number: "SELECT *, max(version) FROM <table> GROUP BY id"
+Versions: Article types use same-table versioning, so we only want the highest version number. I've solved this on the Python side, by grouping by ID and yielding the article with the highest version number.
