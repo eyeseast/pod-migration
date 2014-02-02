@@ -88,7 +88,7 @@ TABLES = {
 
     'lst_nieman_reports_articles': {
         'template': 'nieman-reports-article.xml',
-        'chunks': 1000, # break this list chunks of this length
+        'chunks': 500, # break this list chunks of this length
         'fields': {
             'id': 'id',
             'version': 'version',
