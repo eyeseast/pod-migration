@@ -117,7 +117,7 @@
 		<item>
 			<title>{{ post.title }}</title>
 			<link>http://reports.localhost.com/articles/{{ post.post_name }}/</link>
-			<pubDate>{{ post.pubDate|dateformat }}</pubDate>
+			<pubDate>{{ post.post_date|dateformat }}</pubDate>
 			<dc:creator><![CDATA[{{ post.creator }}]]></dc:creator>
 			<guid isPermaLink="false">{{ post.id }}</guid>
 			<description></description>

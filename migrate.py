@@ -11,7 +11,7 @@ import dataset
 import os
 
 from decimal import Decimal
-from itertools import groupby, izip_longest
+from itertools import groupby, ifilter, izip_longest
 from jinja2 import Environment, FileSystemLoader
 from slugify import slugify
 
@@ -84,10 +84,8 @@ def render(template, posts, name, **kwargs):
     Render an XML file for posts
     Extra kwargs are passed to template.render
     """
-    # bail early if None or [] is passed in
-    if not posts:
-        return
-
+    # filter out None posts
+    posts = (p for p in posts if p is not None)
     page = kwargs.get('page')
 
     if page:

@@ -50,14 +50,14 @@ TABLES = {
         'fields': {
             'id': 'id',
             'version': 'version',
-            'pubDate': 'Date',
+            'pubDate': 'created_datetime',
             'creator': 'created_by',
             'title': 'Headline',
             'slug': lambda a: slugify(a['Headline']),
             'content': lambda a: a['Text'].decode('utf-8').strip(),
             'excerpt': lambda a: a['Teaser'].decode('utf-8'),
             'tags': lambda a: get_tags(a['Tags'] or ''),
-            'post_date': lambda a: a['Date'],
+            'post_date': 'created_datetime',
             'url': 'URL',
             'url_text': 'URL Text',
             'image': 'Teaser Image',
@@ -88,7 +88,7 @@ TABLES = {
 
     'lst_nieman_reports_articles': {
         'template': 'nieman-reports-article.xml',
-        'chunks': 8, # break this list into this many chunks
+        'chunks': 1000, # break this list chunks of this length
         'fields': {
             'id': 'id',
             'version': 'version',
@@ -148,13 +148,13 @@ TABLES = {
         'fields': {
             'id': 'id',
             'version': 'version',
-            'pubDate': 'Date',
+            'pubDate': 'created_datetime',
             'creator': 'created_by',
             'title': lambda a: a['Title'].decode('utf-8').strip(),
             'content': lambda a: a['Text'].decode('utf-8').strip(),
             'excerpt': lambda a: a['Summary'].decode('utf-8'),
-            'post_date': 'Date',
-            'post_date_gmt': 'Date',
+            'post_date': 'created_datetime',
+            'post_date_gmt': 'created_datetime',
             'subhead': 'SubTitle',
             'pod_id': 'id',
             'pod_version': 'version',
