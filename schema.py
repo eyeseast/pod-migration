@@ -88,6 +88,7 @@ TABLES = {
 
     'lst_nieman_reports_articles': {
         'template': 'nieman-reports-article.xml',
+        'chunks': 8, # break this list into this many chunks
         'fields': {
             'id': 'id',
             'version': 'version',
@@ -147,7 +148,7 @@ TABLES = {
         'fields': {
             'id': 'id',
             'version': 'version',
-            'pubDate': 'Publish Date',
+            'pubDate': 'Date',
             'creator': 'created_by',
             'title': lambda a: a['Title'].decode('utf-8').strip(),
             'content': lambda a: a['Text'].decode('utf-8').strip(),

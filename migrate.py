@@ -11,7 +11,7 @@ import dataset
 import os
 
 from decimal import Decimal
-from itertools import groupby
+from itertools import groupby, izip_longest
 from jinja2 import Environment, FileSystemLoader
 from slugify import slugify
 
@@ -72,6 +72,36 @@ def get_most_recent(posts):
         yield post
 
 
+def grouper(iterable, n, fillvalue=None):
+    "Collect data into fixed-length chunks or blocks"
+    # grouper('ABCDEFG', 3, 'x') --> ABC DEF Gxx
+    args = [iter(iterable)] * n
+    return izip_longest(fillvalue=fillvalue, *args)
+
+
+def render(template, posts, name, **kwargs):
+    """
+    Render an XML file for posts
+    Extra kwargs are passed to template.render
+    """
+    # bail early if None or [] is passed in
+    if not posts:
+        return
+
+    page = kwargs.get('page')
+
+    if page:
+        filename = "./output/%s-%i.xml" % (name, page)
+    else:
+        filename = "./output/%s.xml" % name
+
+    # render with posts
+    xml = template.render(posts=posts, **kwargs)
+
+    with open(filename, 'w') as output:
+        output.write(xml.encode('utf-8'))
+
+
 def main():
     """
     For each table,
@@ -99,11 +129,12 @@ def main():
 
         posts = [convert(article, fields) for article in query]
 
-        # render with posts
-        xml = template.render(posts=posts, name=name)
+        if "chunks" in schema:
+            for page, chunk in enumerate(grouper(posts, schema['chunks']), 1):
+                render(template, chunk, name=name, page=page)
 
-        with open('./output/%s.xml' % name, 'w') as output:
-            output.write(xml.encode('utf-8'))
+        else:
+            render(template, posts, name=name)
 
 
 if __name__ == '__main__':
