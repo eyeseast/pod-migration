@@ -48,7 +48,7 @@
         <guid isPermaLink="false">{{ post.id }}</guid>
         <description></description>
         {% if post.content %}
-        <content:encoded><![CDATA[{{ post.content }}]]]></content:encoded>
+        <content:encoded><![CDATA[{{ post.content }}]]></content:encoded>
         {% else %}
         <content:encoded><![CDATA[{{ post.excerpt }}]]></content:encoded>
         {% endif %}
