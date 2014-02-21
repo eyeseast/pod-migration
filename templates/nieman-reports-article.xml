@@ -124,8 +124,8 @@
 			<content:encoded><![CDATA[{{ post.content }}]]></content:encoded>
 			<excerpt:encoded><![CDATA[{{ post.excerpt }}]]></excerpt:encoded>
 			<wp:post_id>{{ post.id }}</wp:post_id>
-			<wp:post_date>{{ post.post_date|dateformat }}</wp:post_date>
-			<wp:post_date_gmt>{{ post.post_date|dateformat }}</wp:post_date_gmt>
+			<wp:post_date>{{ post.post_date }}</wp:post_date>
+			<wp:post_date_gmt>{{ post.post_date }}</wp:post_date_gmt>
 			<wp:comment_status>open</wp:comment_status>
 			<wp:ping_status>open</wp:ping_status>
 			<wp:post_name>{{ post.post_name }}</wp:post_name>
@@ -141,12 +141,16 @@
 			{% endfor %}
 
 			{% for issue in post.issues %}{% if issue %}
-			<category domain="reports-issues" nicename="{{ issue|slugify }}"><![CDATA[{{ issue|decode }}]]></category>
+			<category domain="reports-issues" nicename="{{ issue.Title|slugify }}"><![CDATA[{{ issue.Title|decode }}]]></category>
 			{% endif %}{% endfor %}
 
 			{% for category in post.categories %}
 			<category domain="reports-category" nicename="{{ category|slugify }}"><![CDATA[{{ category|decode }}]]></category>
 			{% endfor %}
+
+			{% for theme in post.themes %}{% if theme %}
+			<category domain="reports-category" nicename="{{ theme['Display Theme']|slugify }}"><![CDATA[{{ theme['Display Theme']|decode }}]]></category>
+			{% endif %}{% endfor %}
 
 			{% for tag in post.tags %}
 			<category domain="post_tag" nicename="{{ tag|slugify }}"><![CDATA[{{ tag|decode }}]]></category>
@@ -204,11 +208,9 @@
 				<wp:meta_value><![CDATA[0]]></wp:meta_value>
 			</wp:postmeta>
 			{% endif %}
-			{#
 			<wp:postmeta>pod_url</wp:meta_key>
-				<wp:meta_value><![CDATA[http://www.nieman.harvard.edu/reports/article/102933/The-Nieman-Factor.aspx]]></wp:meta_value>
+				<wp:meta_value><![CDATA[{{ post.pod_url }}]]></wp:meta_value>
 			</wp:postmeta>
-			#}
 			<wp:postmeta>pod_table</wp:meta_key>
 				<wp:meta_value><![CDATA[{{ name }}]]></wp:meta_value>
 			</wp:postmeta>

@@ -9,5 +9,7 @@ db = dataset.connect('mysql://root@localhost/nieman')
 # we probably only need id and Title
 tags = dict((t['id'], t['Tag']) for t in db['lst_tags'])
 
-# same for issues
-issues = dict((t['id'], t['Label']) for t in db['lst_nieman_reports_issue_themes'])
+# issues and themes are a richer object, so get the whole thing
+themes = dict((t['id'], t) for t in db['lst_nieman_reports_issue_themes'])
+
+issues = dict((t['id'], t) for t in db['lst_nieman_reports_issues'])

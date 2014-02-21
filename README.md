@@ -30,3 +30,10 @@ Issue:
 Tags: Stored as a string of comma-separated IDs. For example, "100030,100077,100078". This is gross, but it also means there's no join table to find.
 
 Versions: Article types use same-table versioning, so we only want the highest version number. I've solved this on the Python side, by grouping by ID and yielding the article with the highest version number.
+
+Issues and Themes:
+
+Articles are part of an issue (Spring 2008, for example) and also filed under a theme (Summer 2007 - Islam: Reporting in Context and With Complexity).
+
+But articles aren't directly connected to issues in the database, just themes. Themes are in turn foreign keyed to issues. I guess this was a many-to-many relationship, from articles to issues, through themes, or maybe a tree model. So we need to reverse this.
+

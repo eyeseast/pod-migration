@@ -53,9 +53,9 @@ def convert(article, schema):
     data = dict(article)
     for wp, pod in schema.iteritems():
         if callable(pod):
-            data[wp] = pod(article)
+            data[wp] = pod(data)
         else:
-            data[wp] = article[pod]
+            data[wp] = data[pod]
 
     return data
 

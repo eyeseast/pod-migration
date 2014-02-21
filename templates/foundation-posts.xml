@@ -54,8 +54,8 @@
         {% endif %}
         <excerpt:encoded><![CDATA[{{ post.excerpt }}]]></excerpt:encoded>
         <wp:post_id>{{ post.id }}</wp:post_id>
-        <wp:post_date>{{ post.post_date|dateformat }}</wp:post_date>
-        <wp:post_date_gmt>{{ post.post_date|dateformat }}</wp:post_date_gmt>
+        <wp:post_date>{{ post.post_date }}</wp:post_date>
+        <wp:post_date_gmt>{{ post.post_date }}</wp:post_date_gmt>
         <wp:comment_status>open</wp:comment_status>
         <wp:ping_status>open</wp:ping_status>
         <wp:post_name>{{ post.slug }}</wp:post_name>
@@ -84,11 +84,9 @@
             <wp:meta_key>pod_id</wp:meta_key>
             <wp:meta_value><![CDATA[{{ post.id }}]]></wp:meta_value>
         </wp:postmeta>
-        {#
         <wp:postmeta>pod_url</wp:meta_key>
-            <wp:meta_value><![CDATA[<!-- Current URL of content -->]]></wp:meta_value>
+            <wp:meta_value><![CDATA[{{ post.pod_url }}]]></wp:meta_value>
         </wp:postmeta>
-        #}
         {% if post.url %}
         <wp:postmeta>pod_url_field</wp:meta_key>
             <wp:meta_value><![CDATA[{{ post.url }}]]></wp:meta_value>

@@ -7,7 +7,7 @@ from decimal import Decimal
 from dateutil.parser import parse
 from slugify import slugify
 
-from db import db, tags, issues
+from db import db, tags, issues, themes
 
 NOW = datetime.datetime.now()
 
@@ -29,6 +29,27 @@ def get_tags(tag_str=None):
     if tag_str:
         return [get_tag(t.strip()) for t in tag_str.split(',')]
     return []
+
+def set_issue_theme(article):
+    """
+    Cheating a bit here. This gets an issue and sets a theme in the process.
+    """
+    theme = themes.get(article['Issue - Theme'])
+
+    # in a few articles, there's no theme, and therefore no issue
+    if theme:
+        issue = issues.get(theme['Issue'])
+
+        # set both here
+        article['themes'] = [theme]
+        article['issues'] = [issue]
+
+        return [issue]
+
+    else:
+        print "No theme for article: %s" % article['Title']
+        article['themes'] = []
+        return []
 
 
 def safe_type(obj, cast, default=None):
@@ -62,6 +83,9 @@ TABLES = {
             'url_text': 'URL Text',
             'image': 'Teaser Image',
             'imported': lambda a: NOW.strftime('%Y-%m-%d'),
+
+            # pod_url: http://nieman.harvard.edu/newsitem.aspx?id=100248
+            'pod_url': lambda a: 'http://nieman.harvard.edu/newsitem.aspx?id={0}'.format(a['id']),
         },
     },
     
@@ -82,7 +106,10 @@ TABLES = {
 
             # taxonomies
             'tags': lambda a: get_tags(a['Tags'] or ''),
-            'categories': lambda a: ['Niemans in the News']
+            'categories': lambda a: ['Niemans in the News'],
+
+            # pod_url: http://nieman.harvard.edu/inthenewsitem.aspx?id=100358
+            'pod_url': lambda a: 'http://nieman.harvard.edu/inthenewsitem.aspx?id={0}'.format(a['id'])
         }
     },
 
@@ -110,8 +137,15 @@ TABLES = {
 
             # taxonomies
             'authors': lambda a: [a['Author'].decode('utf-8')], # make it a list
-            'issues': lambda a: [issues.get(safe_type(a['Issue - Theme'], Decimal))],
+            #'issues': lambda a: [issues.get(safe_type(a['Issue - Theme'], Decimal))],
             'tags': lambda a: get_tags(a['Tags'] or ''),
+            'issues': set_issue_theme,
+
+            # url: http://www.nieman.harvard.edu/reports/article/103050/Urban-Ruins-and-the-New-Unconscious.aspx
+            'pod_url': lambda a: 'http://www.nieman.harvard.edu/reports/article/{id}/{slug}.aspx'.format(
+                id=a['id'],
+                slug=slugify(a['Title'])
+            )
         }
     },
 
@@ -140,6 +174,10 @@ TABLES = {
             # taxonomies
             'authors': lambda a: [a['Author']], # make it a list
             'issues': lambda a: [issues.get(safe_type(a['Issue - Theme'], Decimal))],
+
+            # pod_url: http://www.nieman.harvard.edu/reports/article-online-exclusive/100008/A-Reporters-Toolbag-Reduced-to-TwoFlip-Camera-and-iPhone.aspx
+            'pod_url': lambda a: 'http://www.nieman.harvard.edu/reports/article-online-exclusive/{id}/{slug}.aspx'.format(
+                id=a['id'], slug=slugify(a['Title']))
         }
     },
 
@@ -163,7 +201,11 @@ TABLES = {
 
             # taxonomies
             'authors': lambda a: [a['Author']], # make it a list
-            'categories': lambda a: ['Watchdog']
+            'categories': lambda a: ['Watchdog'],
+
+            # pod_url: http://www.nieman.harvard.edu/reports/watchdogarticle/100022/The-Too-Many-Prisoners-Dilemma.aspx
+            'pod_url': lambda a: 'http://www.nieman.harvard.edu/reports/watchdogarticle/{id}/{slug}.aspx'.format(
+                id=a['id'], slug=slugify(a['Title'])),
         }
     }
 }
