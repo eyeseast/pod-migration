@@ -62,6 +62,14 @@ def safe_type(obj, cast, default=None):
         return default
 
 
+def safe_date(date, default=None):
+    """
+    Like safe_type but for dates only.
+    """
+    if isinstance(date, (datetime.datetime, datetime.date)):
+        return date
+    return parse(date)
+
 TABLES = {
 
     'lst_site_page': {},
@@ -71,14 +79,14 @@ TABLES = {
         'fields': {
             'id': 'id',
             'version': 'version',
-            'pubDate': 'created_datetime',
+            'pubDate': lambda a: safe_date(a['created_datetime']),
             'creator': 'created_by',
             'title': 'Headline',
             'slug': lambda a: slugify(a['Headline']),
             'content': lambda a: a['Text'].decode('utf-8').strip(),
             'excerpt': lambda a: a['Teaser'].decode('utf-8'),
             'tags': lambda a: get_tags(a['Tags'] or ''),
-            'post_date': 'created_datetime',
+            'post_date': lambda a: safe_date(a['created_datetime']),
             'url': 'URL',
             'url_text': 'URL Text',
             'image': 'Teaser Image',
@@ -94,7 +102,7 @@ TABLES = {
         'fields': {
             'id': 'id',
             'version': 'version',
-            'pubDate': 'created_datetime',
+            'pubDate': lambda a: safe_date(a['created_datetime']),
             'post_date': 'created_datetime',
             'title': 'Headline',
             'slug': lambda a: slugify(a['Headline']),
@@ -120,14 +128,14 @@ TABLES = {
             'id': 'id',
             'version': 'version',
             'title': lambda a: a['Title'].decode('utf-8'),
-            'pubDate': 'created_datetime',
+            'pubDate': lambda a: safe_date(a['created_datetime']),
             'creator': 'created_by',
             'guid': 'id',
             'content': lambda a: a['Text'].decode('utf-8').strip(),
             'excerpt': lambda a: a['Teaser'].decode('utf-8'),
             'post_id': 'id',
-            'post_date': 'created_datetime',
-            'post_date_gmt': 'created_datetime',
+            'post_date': lambda a: safe_date(a['created_datetime']),
+            'post_date_gmt': lambda a: safe_date(a['created_datetime']),
             'post_name': lambda a: slugify(a['Title']),
             'subhead': lambda a: a['SubTitle'].decode('utf-8'),
             'pod_id': 'id',
@@ -156,14 +164,14 @@ TABLES = {
             'id': 'id',
             'title': lambda a: a['Title'].decode('utf-8'),
             #'link'
-            'pubDate': 'created_datetime',
+            'pubDate': lambda a: safe_date(a['created_datetime']),
             'creator': 'created_by',
             'guid': 'id',
             'content': lambda a: a['Text'].decode('utf-8').strip(),
             'excerpt': lambda a: a['Teaser'].decode('utf-8'),
             'post_id': 'id',
-            'post_date': 'created_datetime',
-            'post_date_gmt': 'created_datetime',
+            'post_date': lambda a: safe_date(a['created_datetime']),
+            'post_date_gmt': lambda a: safe_date(a['created_datetime']),
             'post_name': lambda a: slugify(a['Title']),
             'subhead': 'SubTitle',
             'pod_id': 'id',
@@ -186,13 +194,13 @@ TABLES = {
         'fields': {
             'id': 'id',
             'version': 'version',
-            'pubDate': 'created_datetime',
+            'pubDate': lambda a: safe_date(a['created_datetime']),
             'creator': 'created_by',
             'title': lambda a: a['Title'].decode('utf-8').strip(),
             'content': lambda a: a['Text'].decode('utf-8').strip(),
             'excerpt': lambda a: a['Summary'].decode('utf-8'),
-            'post_date': 'created_datetime',
-            'post_date_gmt': 'created_datetime',
+            'post_date': lambda a: safe_date(a['created_datetime']),
+            'post_date_gmt': lambda a: safe_date(a['created_datetime']),
             'subhead': 'SubTitle',
             'pod_id': 'id',
             'pod_version': 'version',
